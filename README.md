@@ -1,4 +1,4 @@
-# 🐧 docker_no_redhat ⚙️ v1.0
+# 🐋 docker_no_redhat ⚙️ v1.0
 
 ⚠️ **PENTING**: Skrip dan instruksi di repo ini hanya **untuk Debian / Ubuntu**.  
 **Tidak** untuk Red Hat, CentOS, RHEL, atau turunan mereka.

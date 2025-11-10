@@ -1,0 +1,27 @@
+# =========================================
+# docker_no_redhat .gitignore
+# Hanya untuk Debian/Ubuntu Docker installer
+# =========================================
+
+# Log dan hasil output
+*.log
+*.out
+*.bak
+*.tmp
+
+# File editor (VSCode, vim, dsb)
+.vscode/
+*.swp
+
+# File sistem & OS
+.DS_Store
+Thumbs.db
+
+# Folder sementara (jika nanti ditambahkan)
+tmp/
+cache/
+backup/
+
+# Python cache (kalau nanti tambah tools Python)
+__pycache__/
+*.pyc

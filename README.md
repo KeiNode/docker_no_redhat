@@ -31,7 +31,11 @@ sudo bash ./install.sh
 sudo bash ./uninstall.sh
 
 
-## 🩺 Troubleshooting (Masalah Umum) ##
+
+
+
+
+##🩺 Troubleshooting (Masalah Umum)
 
 🙂 Command tidak ditemukan / tidak bisa jalan
 

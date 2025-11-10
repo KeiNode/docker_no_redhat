@@ -31,9 +31,7 @@ sudo bash ./install.sh
 sudo bash ./uninstall.sh
 
 
-
-
-
+---
 
 ##🩺 Troubleshooting (Masalah Umum)
 

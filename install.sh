@@ -50,7 +50,7 @@ print_banner() {
   # Whale logo (multi-line). Kept terminal-friendly width.
   printf "%b\n" "${BLUE}\
 ____________________________
-< Halo dari Paus Docker! >
+< Halo dari Docker | A.Z.L ! >
  ----------------------------
   \
    \

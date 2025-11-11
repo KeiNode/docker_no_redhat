@@ -1,4 +1,3 @@
-
 #!/usr/bin/env bash
 # install.sh - Docker installer for Debian/Ubuntu
 # Author: AZ.L
@@ -6,6 +5,7 @@
 # and display a banner + progress animation.
 
 set -o pipefail
+set -u
 
 # Colors
 BLUE="\e[34m"
@@ -48,7 +48,7 @@ print_banner(){
   printf "%b\n" "        ##         ."
   printf "%b\n" "      ## ## ## =="
   printf "%b\n" "    ## ## ## ## ==="
-  printf "%b\n" "\\"\\"\\"\\"\\"\\"\\"\\"\\"\\"\\"\\"\\"\\___/ ==="
+  printf "%b\n" "\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\\___/ ==="
   printf "%b\n" "~~~ {~~ ~~~~ ~~~ ~~~~ ~~ ~ / ===-- ~~~\\"
   printf "%b\n" "     \\______ o __/"
   printf "%b\n" "      \\ \\ __/"
@@ -81,15 +81,17 @@ detect_os(){
   log "Detected OS=$OS version=$OS_VERSION"
 }
 
-# Simple check helper
+# Simple check helper (fixed to avoid syntax issues)
 run_and_check(){
-  desc="$1"; shift
-  if "$@" >> "$LOGFILE" 2>&1; then
-    printf "%b" "${GREEN}[OK]${RESET} $desc\n"
+  desc="$1"
+  shift || true
+  # Run the given command; redirect stdout/stderr to log
+  if "$@" >>"$LOGFILE" 2>&1; then
+    printf '%b\n' "${GREEN}[OK]${RESET} $desc"
     log "OK: $desc"
     return 0
   else
-    printf "%b" "${RED}[ERR]${RESET} $desc (see $LOGFILE)\n"
+    printf '%b\n' "${RED}[ERR]${RESET} $desc (see $LOGFILE)"
     log "ERR: $desc"
     ERR_COUNT=$((ERR_COUNT+1))
     return 1
@@ -109,7 +111,7 @@ install_docker(){
   run_and_check "add Docker GPG key" bash -c "curl -fsSL https://download.docker.com/linux/$OS/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg"
 
   # Set up repository
-  echo "\nSetting up Docker repository..." | tee -a "$LOGFILE"
+  echo -e "\nSetting up Docker repository..." | tee -a "$LOGFILE"
   repo_line="deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/$OS $(lsb_release -cs) stable"
   echo "$repo_line" > /etc/apt/sources.list.d/docker.list
   run_and_check "apt update (after adding repo)" apt-get update -y
@@ -213,7 +215,7 @@ progress_bar(){
 
 # Simulate percentage for operations that take time (for nicer UX)
 simulate_progress(){
-  desc="$2"
+  desc="$1"
   for ((p=0; p<=100; p+=10)); do
     printf "\r%s %3d%%" "$desc" "$p"
     sleep $(( (RANDOM%2)+1 ))
@@ -225,10 +227,10 @@ simulate_progress(){
 check_docker_health(){
   echo -e "\nChecking Docker status..."
   if docker info >/dev/null 2>&1; then
-    printf "%b\n" "${GREEN}Docker is running and responding.${RESET}"
+    printf '%b\n' "${GREEN}Docker is running and responding.${RESET}"
     log "Docker OK"
   else
-    printf "%b\n" "${RED}Docker is not responding. Check service and logs in $LOGFILE${RESET}"
+    printf '%b\n' "${RED}Docker is not responding. Check service and logs in $LOGFILE${RESET}"
     log "Docker not responding"
     ERR_COUNT=$((ERR_COUNT+1))
   fi
@@ -267,7 +269,7 @@ main(){
   create_or_add_user
 
   # Final checks with simulated progress
-  simulate_progress 5 "Verifying and cleaning up..."
+  simulate_progress "Verifying and cleaning up..."
   check_docker_health
 
   if [ $ERR_COUNT -eq 0 ]; then

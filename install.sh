@@ -27,6 +27,12 @@ log(){
   echo "$(date +'%Y-%m-%d %H:%M:%S') - $*" | tee -a "$LOGFILE"
 }
 
+print_banner(){
+  printf "%b\n" "${BLUE}┌──────────────────────────────────┐${RESET}"
+  printf "%b\n" "${BLUE}│                                  │${RESET}"
+  printf "%b\n" "${BLUE}│       ${WHITE}A.L${BLUE}                       │${RESET}"
+  printf "%b\n" "${BLUE}└──────────────────────────────────┘${RESET}"
+  printf "\n"
   printf "%b\n" "${WHITE}────────────────────────────────────────────────────────${RESET}"
   printf "%b\n" "                       ${CYAN}DOCKER | A.Z.L${RESET}"
   printf "%b\n" "${WHITE}────────────────────────────────────────────────────────${RESET}"
